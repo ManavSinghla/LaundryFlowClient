@@ -1,0 +1,105 @@
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    shopName: ''
+  });
+  const [error, setError] = useState('');
+  const { register } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setError('');
+      await register(formData.name, formData.email, formData.password, formData.shopName);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to register');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 card dark:border-gray-700">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+            Create an Account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+            Start managing your laundry business with LaundryFlow
+          </p>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {error && <div className="text-red-500 text-sm text-center bg-red-100 dark:bg-red-900/30 p-2 rounded">{error}</div>}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+              <input
+                type="text"
+                name="name"
+                required
+                className="input-field"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Shop Name</label>
+              <input
+                type="text"
+                name="shopName"
+                required
+                className="input-field"
+                value={formData.shopName}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                required
+                className="input-field"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <input
+                type="password"
+                name="password"
+                required
+                className="input-field"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div>
+            <button type="submit" className="w-full btn-primary flex justify-center py-2 px-4">
+              Sign Up
+            </button>
+          </div>
+          <div className="text-sm text-center text-gray-600 dark:text-gray-400">
+            Already have an account? <Link to="/login" className="text-primary-600 hover:text-primary-500 font-medium">Sign in</Link>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
