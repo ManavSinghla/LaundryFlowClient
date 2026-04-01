@@ -112,7 +112,9 @@ const Invoice = () => {
             </div>
             <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center text-sm">
                 <span className="text-gray-500">Payment Status</span>
-                <span className={`font-bold ${order.paymentStatus === 'Paid' ? 'text-green-500' : 'text-red-500'}`}>{order.paymentStatus}</span>
+                <span className={`font-bold ${order.paymentStatus === 'Paid' ? 'text-green-500' : 'text-red-500'}`}>
+                  {order.paymentStatus}
+                </span>
             </div>
           </div>
         </div>

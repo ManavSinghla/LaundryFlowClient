@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -11,13 +11,27 @@ const NewOrder = () => {
   const navigate = useNavigate();
   
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '' });
-  const [items, setItems] = useState([{ itemType: 'Shirt', quantity: 1, pricePerItem: 50, totalPrice: 50 }]);
+  const [items, setItems] = useState([]);
+  const [services, setServices] = useState([]);
   const [paymentStatus, setPaymentStatus] = useState('Unpaid');
   const [loading, setLoading] = useState(false);
 
   const handleCustomerChange = (e) => {
     setCustomer({ ...customer, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const config = { headers: { Authorization: `Bearer ${user.token}` } };
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/services`, config);
+        setServices(data.length > 0 ? data : [{ name: 'Custom Item', price: 0 }]);
+        if (data.length > 0) setItems([{ itemType: data[0].name, quantity: 1, pricePerItem: data[0].price, totalPrice: data[0].price }]);
+        else setItems([{ itemType: 'Custom Item', quantity: 1, pricePerItem: 0, totalPrice: 0 }]);
+      } catch (err) { console.error('Failed to load services'); }
+    }
+    fetchServices();
+  }, [user]);
 
   const searchCustomer = async () => {
     if (!customer.phone) return alert('Enter phone number to search');
@@ -37,18 +51,26 @@ const NewOrder = () => {
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...items];
-    newItems[index][field] = value;
     
-    // Auto calculate price
-    if (field === 'quantity' || field === 'pricePerItem') {
-      newItems[index].totalPrice = newItems[index].quantity * newItems[index].pricePerItem;
+    if (field === 'itemType') {
+      const selectedSvc = services.find(s => s.name === value);
+      newItems[index].itemType = value;
+      if (selectedSvc) {
+        newItems[index].pricePerItem = selectedSvc.price;
+        newItems[index].totalPrice = selectedSvc.price * newItems[index].quantity;
+      }
+    } else {
+      newItems[index][field] = value;
+      if (field === 'quantity' || field === 'pricePerItem') {
+        newItems[index].totalPrice = newItems[index].quantity * newItems[index].pricePerItem;
+      }
     }
-    
     setItems(newItems);
   };
 
   const addItem = () => {
-    setItems([...items, { itemType: 'Shirt', quantity: 1, pricePerItem: 50, totalPrice: 50 }]);
+    const defaultSvc = services[0] || { name: 'Custom Item', price: 0 };
+    setItems([...items, { itemType: defaultSvc.name, quantity: 1, pricePerItem: defaultSvc.price, totalPrice: defaultSvc.price }]);
   };
 
   const removeItem = (index) => {
@@ -143,7 +165,7 @@ const NewOrder = () => {
                     onChange={(e) => handleItemChange(index, 'itemType', e.target.value)}
                     className="input-field"
                   >
-                    {CLOTHING_TYPES.map(type => <option key={type} value={type}>{type}</option>)}
+                    {services.map(type => <option key={type._id || type.name} value={type.name}>{type.name}</option>)}
                   </select>
                 </div>
                 <div className="w-full md:w-24">

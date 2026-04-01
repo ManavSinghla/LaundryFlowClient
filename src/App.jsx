@@ -8,6 +8,7 @@ import OrdersList from './pages/OrdersList';
 import NewOrder from './pages/NewOrder';
 import Invoice from './pages/Invoice';
 import CustomersList from './pages/CustomersList';
+import ServicesList from './pages/ServicesList';
 
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/orders/new" element={<ProtectedRoute><NewOrder /></ProtectedRoute>} />
         <Route path="/orders/:id/invoice" element={<ProtectedRoute><Invoice /></ProtectedRoute>} />
         <Route path="/customers" element={<ProtectedRoute><CustomersList /></ProtectedRoute>} />
+        <Route path="/services" element={<ProtectedRoute><ServicesList /></ProtectedRoute>} />
         
         {/* Catch All */}
         <Route path="*" element={<Navigate to="/" replace />} />

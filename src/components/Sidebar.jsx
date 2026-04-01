@@ -8,7 +8,8 @@ import {
   FiUsers, 
   FiLogOut,
   FiMoon,
-  FiSun
+  FiSun,
+  FiTag
 } from 'react-icons/fi';
 
 const Sidebar = () => {
@@ -39,6 +40,7 @@ const Sidebar = () => {
     { name: 'New Order', path: '/orders/new', icon: FiPlusCircle },
     { name: 'Orders List', path: '/orders', icon: FiList },
     { name: 'Customers', path: '/customers', icon: FiUsers },
+    { name: 'Services', path: '/services', icon: FiTag },
   ];
 
   return (
