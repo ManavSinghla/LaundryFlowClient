@@ -47,7 +47,7 @@ const Sidebar = () => {
     <div className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 h-screen flex flex-col">
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-500">
-          LaundryFlow
+          Supreme Dry Cleaners
         </h1>
         <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">
           {user?.shopName || 'Shop Management'}

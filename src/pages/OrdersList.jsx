@@ -79,7 +79,7 @@ const OrdersList = () => {
 
   const sendWhatsApp = (order) => {
     if (!order.customer?.phone) return alert("Customer phone number is missing.");
-    const text = `Hello ${order.customer.name}!%0A%0AYour laundry order (${order.orderId}) is currently *${order.status}*.%0A%0ATotal Amount: ₹${order.totalAmount}%0A%0AThank you for choosing LaundryFlow!`;
+    const text = `Hello ${order.customer.name}!%0A%0AYour laundry order (${order.orderId}) is currently *${order.status}*.%0A%0ATotal Amount: ₹${order.totalAmount}%0A%0AThank you for choosing Supreme Dry Cleaners!`;
     const url = `https://wa.me/${order.customer.phone}?text=${text}`;
     window.open(url, '_blank');
   };

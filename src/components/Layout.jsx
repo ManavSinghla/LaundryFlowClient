@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navbar could go here if needed, but keeping it minimal */}
         <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 h-16 flex items-center justify-between px-6 sm:hidden">
-            <h1 className="text-xl font-bold text-primary-600">LaundryFlow</h1>
+            <h1 className="text-xl font-bold text-primary-600">Supreme Dry Cleaners</h1>
             {/* Mobile menu toggle would go here */}
         </header>
 

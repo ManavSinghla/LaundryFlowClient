@@ -50,7 +50,7 @@ const Invoice = () => {
         {/* Header */}
         <div className="flex justify-between items-start border-b pb-6 mb-6">
           <div>
-            <h1 className="text-4xl font-extrabold text-primary-600 tracking-tight">LaundryFlow</h1>
+            <h1 className="text-4xl font-extrabold text-primary-600 tracking-tight">Supreme Dry Cleaners</h1>
             <p className="text-gray-500 mt-1">Premium Dry Cleaning & Laundry Services</p>
             <p className="text-gray-500 text-sm mt-1">{user.shopName}</p>
           </div>
@@ -121,7 +121,7 @@ const Invoice = () => {
 
         {/* Footer */}
         <div className="border-t border-gray-200 pt-8 mt-12 text-center text-gray-500 text-sm italic">
-          <p>Thank you for choosing LaundryFlow! We hope to see you again soon.</p>
+          <p>Thank you for choosing Supreme Dry Cleaners! We hope to see you again soon.</p>
           <p className="mt-1">For questions concerning this invoice, please contact the store owner.</p>
         </div>
       </div>
