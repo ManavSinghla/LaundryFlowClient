@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { format } from 'date-fns';
+import { FiPrinter, FiMessageCircle } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 const OrdersList = () => {
   const { user } = useAuth();
@@ -75,6 +77,13 @@ const OrdersList = () => {
     }
   };
 
+  const sendWhatsApp = (order) => {
+    if (!order.customer?.phone) return alert("Customer phone number is missing.");
+    const text = `Hello ${order.customer.name}!%0A%0AYour laundry order (${order.orderId}) is currently *${order.status}*.%0A%0ATotal Amount: ₹${order.totalAmount}%0A%0AThank you for choosing LaundryFlow!`;
+    const url = `https://wa.me/${order.customer.phone}?text=${text}`;
+    window.open(url, '_blank');
+  };
+
   if (loading) return <div>Loading orders...</div>;
 
   return (
@@ -125,6 +134,7 @@ const OrdersList = () => {
                 <th className="py-4 px-6 font-semibold text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
                 <th className="py-4 px-6 font-semibold text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
                 <th className="py-4 px-6 font-semibold text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">Payment</th>
+                <th className="py-4 px-6 font-semibold text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -165,6 +175,24 @@ const OrdersList = () => {
                       >
                         {order.paymentStatus}
                       </button>
+                    </td>
+                    <td className="py-4 px-6 text-right">
+                      <div className="flex items-center justify-end space-x-3">
+                        <button 
+                          onClick={() => sendWhatsApp(order)}
+                          className="text-green-500 hover:text-green-600 transition-colors p-2 rounded-full hover:bg-green-50 dark:hover:bg-green-900/30"
+                          title="Notify via WhatsApp"
+                        >
+                          <FiMessageCircle className="w-5 h-5" />
+                        </button>
+                        <Link 
+                          to={`/orders/${order._id}/invoice`}
+                          className="text-primary-500 hover:text-primary-600 transition-colors p-2 rounded-full hover:bg-primary-50 dark:hover:bg-primary-900/30"
+                          title="Print / PDF Receipt"
+                        >
+                          <FiPrinter className="w-5 h-5" />
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))
